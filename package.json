@@ -1,0 +1,20 @@
+{
+  "name": "simple-crud-api",
+  "version": "1.0.0",
+  "description": "Node.js CRUD API",
+  "author": "M¡ke",
+  "license": "ISC",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start:dev": "nodemon ./src/index.ts",
+    "start:prod": "tsc && node ./dist/index.js",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2",
+    "nodemon": "^3.0.3"
+  }
+}
