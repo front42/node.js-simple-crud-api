@@ -41,7 +41,7 @@ const server = http.createServer((request, response) => {
           request.on('end', () => {
             try {
               const newUser = JSON.parse(postBody);
-              if (typeof newUser.name !== 'string' || typeof newUser.age !== 'number' || !hobbiesChecker(newUser.hobbies)) {
+              if (typeof newUser.username !== 'string' || typeof newUser.age !== 'number' || !hobbiesChecker(newUser.hobbies)) {
                 response.statusCode = 400;
                 response.end(`Request body doesn't contain required fields of mandatory types`);
               } else if (storage.get().find(user => user.id === newUser.id)) {
@@ -76,7 +76,7 @@ const server = http.createServer((request, response) => {
               let user = storage.get().find(user => user.id === pathSegments[2]);
               if (user) {
                 let updatedUser = {...JSON.parse(newBody)};
-                if (typeof updatedUser.name !== 'string' || typeof updatedUser.age !== 'number' || !hobbiesChecker(updatedUser.hobbies)) {
+                if (typeof updatedUser.username !== 'string' || typeof updatedUser.age !== 'number' || !hobbiesChecker(updatedUser.hobbies)) {
                   response.statusCode = 400;
                   response.end(`Request body doesn't contain required fields of mandatory types`);
                 } else {

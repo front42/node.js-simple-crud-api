@@ -16,7 +16,7 @@ export class Storage {
   update(id: string, newUser: IUser) {
     let user = this.users.find(user => user.id === id);
     user!.id = id;
-    user!.name = newUser.name;
+    user!.username = newUser.username;
     user!.age = newUser.age;
     user!.hobbies = newUser.hobbies;
   }
