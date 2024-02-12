@@ -36,11 +36,11 @@ const server = http.createServer((request, response) => {
           }
           break;
         case 'POST':
-          let requestBody = '';
-          request.on('data', chunk => requestBody += chunk);
+          let postBody = '';
+          request.on('data', chunk => postBody += chunk);
           request.on('end', () => {
             try {
-              const newUser = JSON.parse(requestBody);
+              const newUser = JSON.parse(postBody);
               if (typeof newUser.name !== 'string' || typeof newUser.age !== 'number' || !hobbiesChecker(newUser.hobbies)) {
                 response.statusCode = 400;
                 response.end(`Request body doesn't contain required fields of mandatory types`);
@@ -51,16 +51,65 @@ const server = http.createServer((request, response) => {
                 newUser.id = v4();
                 storage.add(newUser);
                 response.statusCode = 201;
-                response.end('Mew User successfully added with uuid generated');
+                response.end(JSON.stringify(newUser, null, 2));
               } else {
                 storage.add(newUser);
                 response.statusCode = 201;
-                response.end('Mew User successfully added');
+                response.end(JSON.stringify(newUser, null, 2));
               }
             } catch (error) {
               response.end(`Check request JSON-body`);
             }
           });
+          break;
+        case 'PUT':
+          if (!pathSegments[2]) {
+            response.statusCode = 400;
+            response.end('Id is required');
+          } else if (!validate(pathSegments[2])) {
+            response.statusCode = 400;
+            response.end('Id not valid');
+          } else {
+            let newBody = '';
+            request.on('data', chunk => newBody += chunk);
+            request.on('end', () => {
+              let user = storage.get().find(user => user.id === pathSegments[2]);
+              if (user) {
+                let updatedUser = {...JSON.parse(newBody)};
+                if (typeof updatedUser.name !== 'string' || typeof updatedUser.age !== 'number' || !hobbiesChecker(updatedUser.hobbies)) {
+                  response.statusCode = 400;
+                  response.end(`Request body doesn't contain required fields of mandatory types`);
+                } else {
+                  storage.update(pathSegments[2], updatedUser);
+                  response.writeHead(200, { 'Content-Type': 'application/json' });
+                  response.end(JSON.stringify(updatedUser, null, 2));
+                }
+              } else {
+                response.statusCode = 404;
+                response.end('No such user');
+              }
+            });
+          };
+          break;
+        case 'DELETE':
+          if (!pathSegments[2]) {
+            response.statusCode = 400;
+            response.end('Id is required');
+          } else if (!validate(pathSegments[2])) {
+            response.statusCode = 400;
+            response.end('Id not valid');
+          } else {
+            let user = storage.get().find(user => user.id === pathSegments[2]);
+            if (!user) {
+              response.statusCode = 404;
+              response.end('No such user');
+            } else {
+               storage.delete(user.id);
+               response.statusCode = 204;
+               response.end();
+            }
+          }
+          break;
       }
     }
   } catch (error) {
