@@ -12,11 +12,11 @@ Use these commands to enjoy, for example:
 
 Then you can try **curl** or just **address bar** to check API adding **api/endpoints** to http://localhost:4000/  
 But the most convenient way is to send your requests from **Postman**:
-- GET http://localhost:4000/**api/users** - get all users from storage
-- GET http://localhost:4000/**api/users/{userId}** - get user by id (uuid)
-- POST http://localhost:4000/**api/users** - create new user and add it in storage
-- PUT http://localhost:4000/**api/users/{userId}** - update existing user (all fields required)
-- DELETE http://localhost:4000/**api/users/{userId}** - delete existing user from storage
+- GET http://localhost:4000/api/users - get all users from storage
+- GET http://localhost:4000/api/users/{userId} - get user by id (uuid)
+- POST http://localhost:4000/api/users - create new user and add it in storage
+- PUT http://localhost:4000/api/users/{userId} - update existing user (all fields required)
+- DELETE http://localhost:4000/api/users/{userId} - delete existing user from storage
 
 User's required fields & types (set in your request **JSON**-body):
 - username: string
